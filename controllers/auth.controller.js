@@ -7,17 +7,19 @@ export const login = async (req, res) => {
   const {username, password} = req.body;
 
   const user = await User.findOne({ username });
-  console.log(user);
+  if(!user) {
+    return res.status(401).send("Invalid");
+  }
 
   const isPasswordGood = await bcrypt.compare(password, user.password);
-  console.log(isPasswordGood); 
+  
   if(isPasswordGood) {
     const payload = {
      role: user.role,
      username: user.name,
      name: user.name
     };
-    const token = jwt.sign(payload, "KEY123");
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie("token", token, {httpOnly: true});
 
     res.send();

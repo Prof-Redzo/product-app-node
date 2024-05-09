@@ -2,8 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import "dotenv/config";
 
 import authRoutes from "./routes/auth-routes.js";
+import userRoutes from "./routes/user-routes.js";
+import productRoutes from "./routes/product-routes.js";
 
 const app = express();
 const PORT = 3000;
@@ -22,6 +25,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 app.listen(PORT, () =>{
   console.log("Running on port", PORT);
